@@ -14,7 +14,7 @@ class _LogInpageState extends State<LogInpage> {
     SystemChrome.setPreferredOrientations([
       //añadimos a la lista solo los admitidos 
       //portrait = modo vertical
-      //landed = modo Horizontal
+      //landscape = modo Horizontal
 
       DeviceOrientation.portraitUp, //con estos dos Device solo admitimos la opcion portrait
       DeviceOrientation.portraitDown,
