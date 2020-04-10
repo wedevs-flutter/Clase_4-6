@@ -12,9 +12,9 @@ class _HomaePageState extends State<HomaePage> {
   UserModel reParams;
   @override
   Widget build(BuildContext context) {
-    reParams = ModalRoute.of(context).settings.arguments;
+    reParams = ModalRoute.of(context).settings.arguments; // manera de recibir los valores enviados de la vista SignUpPage
     print("#################   Acepted  ##################");
-    print(" $reParams");
+    print(" $reParams"); //imprimimos los valores
     print("################################################");
     
     return Scaffold(
@@ -43,10 +43,10 @@ class _HomaePageState extends State<HomaePage> {
               height: 100,
               width: 100,
               color: Colors.blue,
-              child: QrImage(
-                data: reParams.email,
-                version: QrVersions.auto,
-                backgroundColor: Colors.white,
+              child: QrImage( //widget QR de la dependencia
+                data: reParams.email, // valor que se codificara (String)
+                version: QrVersions.auto, //varsion a usarse
+                backgroundColor: Colors.white, //color de fondo
               ),
             ),
             Column(
@@ -54,20 +54,21 @@ class _HomaePageState extends State<HomaePage> {
               children: <Widget>[
                 Text("${reParams.usuario}"),
                 Text("${reParams.email}"),
+                // manera de utilizar el ratingBar
                 RatingBar(
-                  itemSize: 30,
-                  initialRating: reParams.calficasion.toDouble(),
-                  minRating: reParams.calficasion.toDouble(),
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    color: Colors.amber,
+                  itemSize: 30, // tamaño de los iconos
+                  initialRating: reParams.calficasion.toDouble(), //valor inicial de las estrellitas pintadas
+                  minRating: reParams.calficasion.toDouble(), // valor minimo de estrellitas a pintar
+                  direction: Axis.horizontal, //eje de desplazamiento de los Icons
+                  allowHalfRating: true, // true = habilitar valores 3.5(***[media estrella pintada]) or False = habilitar solo enteros ej. 3(***)
+                  itemCount: 5, //Nro de los iconos a generar 
+                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0), //padding entre iconos
+                  itemBuilder: (context, _) => Icon( //metodo que contruye las estrellotas
+                    Icons.star, //icono a crearse en este ejemplo estrella
+                    color: Colors.amber, // color de icono
                   ),
-                  onRatingUpdate: (rating) {
-                    print(rating);
+                  onRatingUpdate: (rating) {// Funcion escucha de rating
+                    print(rating); // la variable rating retorna los valores del rating
                   },
                 )
               ],

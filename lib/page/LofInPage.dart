@@ -10,8 +10,13 @@ class LogInpage extends StatefulWidget {
 class _LogInpageState extends State<LogInpage> {
 //bloque pantalla portrait
   void bloque() {
+    //accedemos a los serviocion
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
+      //añadimos a la lista solo los admitidos 
+      //portrait = modo vertical
+      //landed = modo Horizontal
+
+      DeviceOrientation.portraitUp, //con estos dos Device solo admitimos la opcion portrait
       DeviceOrientation.portraitDown,
     ]);
   }
@@ -47,7 +52,9 @@ class _LogInpageState extends State<LogInpage> {
           ),
           RaisedButton(
             onPressed: () {
+              //lanza el toast
               Toast.show("Exitoso...!", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+              //manda a la pantalla /singUp registrada en los routes de main.dart
               Navigator.of(context).pushNamed('/SignUp');
             },
             child: Text("Siguiente"),

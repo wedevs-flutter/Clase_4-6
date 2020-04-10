@@ -17,8 +17,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey
       ),
 
-      initialRoute: '/',
-      routes:{
+      initialRoute: '/',//pantalla que lanzara primero
+      routes:{//registramos rutas en un map{(clave: valor)} sintaxis
+
+      //manera de uso
+      //clave : (de donde= context) (nos mada= la funcion que retorna)( a La vista= la vista que creamos)
         '/' :(context) => LogInpage(),
         '/SignUp':(context) => SignUpPage(),
          '/Home':(context) => HomaePage(),
@@ -27,4 +30,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
