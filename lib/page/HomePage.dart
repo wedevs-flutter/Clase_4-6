@@ -10,6 +10,7 @@ class HomaePage extends StatefulWidget {
 
 class _HomaePageState extends State<HomaePage> {
   UserModel reParams;
+  
   @override
   Widget build(BuildContext context) {
     reParams = ModalRoute.of(context).settings.arguments; // manera de recibir los valores enviados de la vista SignUpPage

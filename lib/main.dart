@@ -3,7 +3,6 @@ import 'package:logic_class_flutter/page/HomePage.dart';
 import 'package:logic_class_flutter/page/LofInPage.dart';
 import 'package:logic_class_flutter/page/SignUpPage.dart';
 
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -13,20 +12,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey
-      ),
+      theme: ThemeData(primarySwatch: Colors.blueGrey),
 
-      initialRoute: '/',//pantalla que lanzara primero
-      routes:{//registramos rutas en un map{(clave: valor)} sintaxis
+      initialRoute: '/', //pantalla que lanzara primero
+      routes: {
+        //registramos rutas en un map{(clave: valor)} sintaxis
 
-      //manera de uso
-      //clave : (de donde= context) (nos mada= la funcion que retorna)( a La vista= la vista que creamos)
-        '/' :(context) => LogInpage(),
-        '/SignUp':(context) => SignUpPage(),
-         '/Home':(context) => HomaePage(),
-      } ,
-
+        //manera de uso
+        //clave : (de donde= context) (nos mada= la funcion que retorna)( a La vista= la vista que creamos)
+        '/': (context) => LogInpage(),
+        '/SignUp': (context) => SignUpPage(),
+        '/Home': (context) => HomaePage(),
+      },
     );
   }
 }

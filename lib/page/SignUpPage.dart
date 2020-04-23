@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logic_class_flutter/Data/HelperDB.dart';
 import 'package:logic_class_flutter/models/UserModel.dart';
 import 'package:toast/toast.dart';
 
@@ -8,6 +9,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  //instanciar la db
+  HelperDB db = HelperDB();
   //controladores para los textField
   var userController = TextEditingController();
   var emailController = TextEditingController();
@@ -32,17 +35,21 @@ class _SignUpPageState extends State<SignUpPage> {
           children: <Widget>[
             Text("Registro"),
             TextField(
-              keyboardType: TextInputType.text, // tipo de entrada de datos cambia el teclado
-              controller: userController, // controlador que se instancio arriba v;
-              decoration: InputDecoration(labelText: "usuario"), 
+              keyboardType: TextInputType
+                  .text, // tipo de entrada de datos cambia el teclado
+              controller:
+                  userController, // controlador que se instancio arriba v;
+              decoration: InputDecoration(labelText: "usuario"),
             ),
             TextField(
               keyboardType: TextInputType.emailAddress,
-              controller: emailController,// controlador que se instancio arriba v;
+              controller:
+                  emailController, // controlador que se instancio arriba v;
               decoration: InputDecoration(labelText: "email"),
             ),
             TextField(
-              controller: pass1Controller,// controlador que se instancio arriba v;
+              controller:
+                  pass1Controller, // controlador que se instancio arriba v;
               keyboardType: TextInputType.visiblePassword,
               obscureText: true, //obstruye la contraseña con ****
               decoration: InputDecoration(
@@ -54,23 +61,27 @@ class _SignUpPageState extends State<SignUpPage> {
                  * 
                  * hay similitud verdad
                  */
-                errorText: !sw ? "contraseña invalida" : null, //operador ternario para validar el errofocus del textfiel 
+                errorText: !sw
+                    ? "contraseña invalida"
+                    : null, //operador ternario para validar el errofocus del textfiel
               ),
             ),
             TextField(
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
               controller: pass2Controller,
-              onChanged: (codescucha){ //funcion de escucha del textfiel en tiempo real codescucha es donde se almacena los valores
-                setState(() { //metodo setState es para redibujar la pantalla cuando hay un cambio 
-                  if(pass1Controller.text.toString().trim() == pass2Controller.text.toString().trim()){ //preguntamos si las contraseñas son iguales
-                    sw= true;
-                  }else{
+              onChanged: (codescucha) {
+                //funcion de escucha del textfiel en tiempo real codescucha es donde se almacena los valores
+                setState(() {
+                  //metodo setState es para redibujar la pantalla cuando hay un cambio
+                  if (pass1Controller.text.toString().trim() ==
+                      pass2Controller.text.toString().trim()) {
+                    //preguntamos si las contraseñas son iguales
+                    sw = true;
+                  } else {
                     sw = false;
                   }
-                  
                 });
-
               },
               decoration: InputDecoration(
                   labelText: "repita contraseña",
@@ -79,8 +90,7 @@ class _SignUpPageState extends State<SignUpPage> {
             RaisedButton(
               onPressed: () {
                 UserModel usertmp; //instanciamos nuestro modelUser
-                if(_validate()){
-
+                if (_validate()) {
                   //inicializamos el model con los valores de los textfield
                   usertmp = UserModel(
                     usuario: userController.text.toString().trim(),
@@ -89,19 +99,19 @@ class _SignUpPageState extends State<SignUpPage> {
                   );
                   //lanzamos un toast
                   Toast.show("Registro con exito...", context,
-                    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                      duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                   print("validado");
 
-                  //y nos manda a la siguiente pantalla
-                  Navigator.of(context).pushNamed('/Home',arguments: usertmp);
+                  db.insertUser(usertmp);
 
-                }else{
+                  //y nos manda a la siguiente pantalla
+                  //Navigator.of(context).pushNamed('/Home',arguments: usertmp);
+
+                } else {
                   Toast.show("error...", context,
-                    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                      duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                   print("error..!!");
                 }
-
-                
               },
               child: Text("Registrar"),
             )
@@ -111,17 +121,17 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  bool _validate(){
-    if(emailController.text.toString().isEmpty){
+  bool _validate() {
+    if (emailController.text.toString().isEmpty) {
       return false;
     }
-    if(userController.text.toString().isEmpty){
+    if (userController.text.toString().isEmpty) {
       return false;
     }
-    if(pass1Controller.text.toString().isEmpty){
+    if (pass1Controller.text.toString().isEmpty) {
       return false;
     }
-    if(pass2Controller.text.toString().isEmpty){
+    if (pass2Controller.text.toString().isEmpty) {
       return false;
     }
     return true;
