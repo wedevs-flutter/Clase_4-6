@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logic_class_flutter/Data/HelperDB.dart';
 import 'package:logic_class_flutter/models/UserModel.dart';
 import 'package:toast/toast.dart';
 
@@ -9,6 +10,11 @@ class LogInpage extends StatefulWidget {
 }
 
 class _LogInpageState extends State<LogInpage> {
+//controladores de texto
+  var emailController = TextEditingController();
+  var passController = TextEditingController();
+
+  HelperDB db = HelperDB();
 //bloque pantalla portrait
   void bloque() {
     //accedemos a los serviocion
@@ -43,22 +49,34 @@ class _LogInpageState extends State<LogInpage> {
         children: <Widget>[
           Text("Log In"),
           TextField(
+            controller: emailController,
             decoration: InputDecoration(labelText: "Email"),
           ),
           TextField(
+            controller: passController,
             decoration: InputDecoration(labelText: "Password"),
           ),
           RaisedButton(
             onPressed: () {
-              //lanza el toast
-              Toast.show("Exitoso...!", context,
-                  duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-              //manda a la pantalla /singUp registrada en los routes de main.dart
-              Navigator.of(context).pushNamed('/Home',
-                  arguments: UserModel(
-                      usuario: "user",
-                      email: "bj60@gmail.com",
-                      pass: "123456789"));
+              String email = emailController.text.toString().trim();
+              String pass = passController.text.toString().trim();
+              if (!(email.isEmpty && pass.isEmpty)) {
+                // ? consulta
+                  var lista = db.readUserEmailPass(email, pass);
+
+                //lanza el toast
+                Toast.show("Exitoso...!${lista}", context,
+                    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                //manda a la pantalla /singUp registrada en los routes de main.dart
+                Navigator.of(context).pushNamed('/Home',
+                    arguments: UserModel(
+                        usuario: "user",
+                        email: "bj60@gmail.com",
+                        pass: "123456789"));
+              } else {
+                Toast.show("Usuario y contraseña nulos...!", context,
+                    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+              }
             },
             child: Text("iniciar"),
           ),

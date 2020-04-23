@@ -3,6 +3,7 @@ import 'package:sqflite/sqflite.dart';
 
 class HelperDB {
   static const TABLE_NAME = "usuario";
+  
   //crear la DB
   Future<Database> db =
       openDatabase('registro1.db', version: 1, onCreate: (Database db, int i) async {
@@ -32,7 +33,21 @@ class HelperDB {
     final respuesta = lista.map((Map<String, dynamic> data){
       return UserModel.fromMap(data);
     }).toList();
+
     print("#################################");
+    print(">>>>> READ ");
+    print("#################################");
+    return respuesta.isEmpty ? [] : respuesta;
+  }
+  Future<List<UserModel>> readUserEmailPass(String email, String pass ) async{
+    Database db = await this.db;
+    List<Map<String, dynamic>> lista = await db.query(TABLE_NAME, where: "email = ? and pass = ?",whereArgs: [email, pass]);   
+    final respuesta = lista.map((Map<String, dynamic> data){
+      return UserModel.fromMap(data);
+    }).toList();
+    
+    print("#################################");
+    print(respuesta.length);
     print(">>>>> READ ");
     print("#################################");
     return respuesta.isEmpty ? [] : respuesta;
