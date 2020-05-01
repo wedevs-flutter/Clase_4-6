@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:logic_class_flutter/Data/HelperDB.dart';
 import 'package:logic_class_flutter/models/UserModel.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -9,18 +10,41 @@ class HomaePage extends StatefulWidget {
 }
 
 class _HomaePageState extends State<HomaePage> {
-  UserModel reParams;
-  
+  //UserModel reParams;
+  HelperDB db = HelperDB();
+
   @override
   Widget build(BuildContext context) {
-    reParams = ModalRoute.of(context).settings.arguments; // manera de recibir los valores enviados de la vista SignUpPage
+    /*reParams = ModalRoute.of(context).settings.arguments; // manera de recibir los valores enviados de la vista SignUpPage
     print("#################   Acepted  ##################");
     print(" $reParams"); //imprimimos los valores
     print("################################################");
-    
+    */
     return Scaffold(
       appBar: AppBar(),
-      body: _body(),
+      body: _bodyList(),
+    );
+  }
+
+  Widget _bodyList() {
+    return FutureBuilder(
+      future: db.readUser(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<UserModel> lista = snapshot.data;
+          return lista.isEmpty
+              ? Center(
+                  child: Text("data empty..!!"),
+                )
+              : ListView.builder(
+                  itemCount: lista.length,
+                  itemBuilder: (context, int index) {
+                    return _item(reParams: lista[index]);
+                  },
+                );
+        }
+        return Center(child: CircularProgressIndicator());
+      },
     );
   }
 
@@ -34,7 +58,7 @@ class _HomaePageState extends State<HomaePage> {
     );
   }
 
-  Widget _item() {
+  Widget _item({UserModel reParams}) {
     return Container(
       color: Colors.red,
       child: Card(
@@ -44,7 +68,8 @@ class _HomaePageState extends State<HomaePage> {
               height: 100,
               width: 100,
               color: Colors.blue,
-              child: QrImage( //widget QR de la dependencia
+              child: QrImage(
+                //widget QR de la dependencia
                 data: reParams.email, // valor que se codificara (String)
                 version: QrVersions.auto, //varsion a usarse
                 backgroundColor: Colors.white, //color de fondo
@@ -58,19 +83,39 @@ class _HomaePageState extends State<HomaePage> {
                 // manera de utilizar el ratingBar
                 RatingBar(
                   itemSize: 30, // tamaño de los iconos
-                  initialRating: reParams.calficasion.toDouble(), //valor inicial de las estrellitas pintadas
-                  minRating: reParams.calficasion.toDouble(), // valor minimo de estrellitas a pintar
-                  direction: Axis.horizontal, //eje de desplazamiento de los Icons
-                  allowHalfRating: true, // true = habilitar valores 3.5(***[media estrella pintada]) or False = habilitar solo enteros ej. 3(***)
-                  itemCount: 5, //Nro de los iconos a generar 
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0), //padding entre iconos
-                  itemBuilder: (context, _) => Icon( //metodo que contruye las estrellotas
+                  initialRating: reParams.calficasion
+                      .toDouble(), //valor inicial de las estrellitas pintadas
+                  minRating: reParams.calficasion
+                      .toDouble(), // valor minimo de estrellitas a pintar
+                  direction:
+                      Axis.horizontal, //eje de desplazamiento de los Icons
+                  allowHalfRating:
+                      true, // true = habilitar valores 3.5(***[media estrella pintada]) or False = habilitar solo enteros ej. 3(***)
+                  itemCount: 5, //Nro de los iconos a generar
+                  itemPadding: EdgeInsets.symmetric(
+                      horizontal: 4.0), //padding entre iconos
+                  itemBuilder: (context, _) => Icon(
+                    //metodo que contruye las estrellotas
                     Icons.star, //icono a crearse en este ejemplo estrella
                     color: Colors.amber, // color de icono
                   ),
-                  onRatingUpdate: (rating) {// Funcion escucha de rating
-                    print(rating); // la variable rating retorna los valores del rating
+                  onRatingUpdate: (rating) {
+                    // Funcion escucha de rating
+                    print(rating);
+                    reParams.setRatin(rating.toInt());
+
+                    db.updateUser(
+                        reParams); // la variable rating retorna los valores del rating;
                   },
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    setState(() {
+                      db.deleteUser(reParams);
+                    });
+                  },
+                  child: Text("delete id"),
+                  shape: StadiumBorder(),
                 )
               ],
             ),
@@ -80,3 +125,7 @@ class _HomaePageState extends State<HomaePage> {
     );
   }
 }
+
+// todo: blabla
+// ? query
+// ! error

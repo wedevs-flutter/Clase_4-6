@@ -57,18 +57,18 @@ class _LogInpageState extends State<LogInpage> {
             decoration: InputDecoration(labelText: "Password"),
           ),
           RaisedButton(
-            onPressed: () {
+            onPressed: () async {
               String email = emailController.text.toString().trim();
               String pass = passController.text.toString().trim();
-              if (!(email.isEmpty && pass.isEmpty)) {
                 // ? consulta
-                  var lista = db.readUserEmailPass(email, pass);
+              List<UserModel> lista = await db.readUserEmailPass(email, pass);
+              if (!(email.isEmpty && pass.isEmpty) && lista.length > 0) {
 
                 //lanza el toast
-                Toast.show("Exitoso...!${lista}", context,
+                Toast.show("Exitoso...!$lista", context,
                     duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
                 //manda a la pantalla /singUp registrada en los routes de main.dart
-                Navigator.of(context).pushNamed('/Home',
+                Navigator.of(context).pushNamed('/Home',  
                     arguments: UserModel(
                         usuario: "user",
                         email: "bj60@gmail.com",

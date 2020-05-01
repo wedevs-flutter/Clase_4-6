@@ -15,6 +15,7 @@ class UserModel{
   }
 
   //get
+  int get id => this._id;
   String get usuario => this._usurio;
   String get email => this._email;
   String get contrasenia => this._contrasenia;
